@@ -25,4 +25,90 @@
 /* V11 question viewer */
 .protected-banner{display:flex;justify-content:space-between;gap:16px;background:#0d1730;color:#fff;border-radius:14px;padding:14px 18px;font-size:13px;font-weight:700;margin:28px 0 14px}.protected-banner span{opacity:.72;font-weight:600}.question-list{display:grid;gap:14px}.question-card{border:1px solid rgba(31,42,68,.12);background:#fff;border-radius:18px;padding:22px;box-shadow:0 10px 30px rgba(17,24,39,.05)}.question-top{display:flex;justify-content:space-between;align-items:center;color:#4169ff;font-size:12px;font-weight:800}.question-top strong{background:#eef2ff;border-radius:999px;padding:7px 10px;font-size:11px}.question-card h3{font-size:18px;line-height:1.55;margin:18px 0}.question-card small{font-size:9px;letter-spacing:.14em;color:#94a0b8;font-weight:800}.empty-state{border:1px dashed #b9c2d6;border-radius:18px;padding:34px;text-align:center;color:#71809b;background:#fff}@media(max-width:640px){.protected-banner{flex-direction:column;gap:6px}.question-card{padding:18px}.question-card h3{font-size:16px}}
 
-.chapter-select-row{display:flex;gap:8px;align-items:center}.chapter-select-row select{flex:1}.add-chapter-mini{border:1px solid var(--line);background:#fff;border-radius:10px;padding:11px 12px;font-weight:800;color:var(--brand);cursor:pointer;white-space:nowrap}.subjects-manager{max-width:1000px}.chapter-add-form{display:grid;grid-template-columns:160px 190px 1fr auto;gap:14px;align-items:end;padding:24px;border-bottom:1px solid var(--line)}.chapter-add-form label{display:grid;gap:8px;font-size:12px;font-weight:800;color:#344054}.chapter-add-form input,.chapter-add-form select{width:100%;box-sizing:border-box;border:1px solid #d9dfeb;border-radius:11px;padding:12px 13px;background:#fff;font:inherit}.chapter-manager-list{padding:24px}.chapter-manager-list h3{margin:0 0 14px;font-size:15px}.chapter-manager-row{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--line)}.chapter-manager-row>span{width:30px;color:var(--brand);font-weight:800}.chapter-manager-row strong{flex:1}.chapter-manager-row em{font-style:normal;font-size:11px;color:#98a2b3;font-weight:800}.chapter-manager-row .remove-btn{margin-left:auto}.@media(max-width:800px){.chapter-add-form{grid-template-columns:1fr 1fr}.chapter-name-field{grid-column:1/-1}.chapter-add-form .admin-primary{width:100%}}@media(max-width:520px){.chapter-add-form{grid-template-columns:1fr}.chapter-name-field{grid-column:auto}.chapter-select-row{align-items:stretch}.add-chapter-mini{padding:10px}.chapter-manager-row{gap:9px}.chapter-manager-row strong{font-size:13px}}
+.chapter-select-row{display:flex;gap:8px;align-items:center}.chapter-select-row select{flex:1}.add-chapter-mini{border:1px solid var(--line);background:#fff;border-radius:10px;padding:11px 12px;font-weight:800;color:var(--brand);cursor:pointer;white-space:nowrap}.subjects-manager{max-width:1000px}.chapter-add-form{display:grid;grid-template-columns:160px 190px 1fr auto;gap:14px;align-items:end;padding:24px;border-bottom:1px solid var(--line)}.chapter-add-form label{display:grid;gap:8px;font-size:12px;font-weight:800;color:#344054}.chapter-add-form input,.chapter-add-form select{width:100%;box-sizing:border-box;border:1px solid #d9dfeb;border-radius:11px;padding:12px 13px;background:#fff;font:inherit}.chapter-manager-list{padding:24px}.chapter-manager-list h3{margin:0 0 14px;font-size:15px}.chapter-manager-row{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--line)}.chapter-manager-row>span{width:30px;color:var(--brand);font-weight:800}.chapter-manager-row strong{flex:1}.chapter-manager-row em{font-style:normal;font-size:11px;color:#98a2b3;font-weight:800}.chapter-manager-row .remove-btn{margin-left:auto}@media(max-width:800px){.chapter-add-form{grid-template-columns:1fr 1fr}.chapter-name-field{grid-column:1/-1}.chapter-add-form .admin-primary{width:100%}}@media(max-width:520px){.chapter-add-form{grid-template-columns:1fr}.chapter-name-field{grid-column:auto}.chapter-select-row{align-items:stretch}.add-chapter-mini{padding:10px}.chapter-manager-row{gap:9px}.chapter-manager-row strong{font-size:13px}}
+
+/* ── Payment Page V2 ── */
+.pay-page{min-height:calc(100vh - 74px);background:linear-gradient(160deg,#f7f8fc 0%,#eef0fb 100%);padding:50px 0 80px}
+.pay-header{width:min(1100px,92%);margin:0 auto 32px}
+.pay-header h1{margin:10px 0 6px}
+.pay-steps{width:min(1100px,92%);margin:0 auto 28px;display:flex;align-items:center;gap:0}
+.pay-step{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800;color:#98a2b3;padding:10px 18px;border-radius:99px;transition:.2s}
+.pay-step span{width:24px;height:24px;border-radius:50%;background:#e4e7ec;display:grid;place-items:center;font-size:11px;font-weight:900}
+.pay-step.active{color:var(--brand);background:rgba(91,92,240,.08)}
+.pay-step.active span{background:var(--brand);color:#fff}
+.pay-step.done{color:var(--success)}
+.pay-step.done span{background:var(--success);color:#fff}
+.pay-step-line{flex:1;height:2px;background:#e4e7ec;max-width:60px}
+.pay-grid{width:min(1100px,92%);margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+.pay-card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:28px;box-shadow:0 8px 32px rgba(16,24,40,.06)}
+.pay-card-header{margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.pay-card-header h2{font-size:18px;margin:0 0 5px;letter-spacing:-.4px}
+.pay-card-header p{font-size:13px;color:var(--muted);margin:0;line-height:1.5}
+.pay-qr-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:20px}
+.pay-qr-img{border-radius:16px;border:3px solid var(--line);padding:8px;background:#fff;box-shadow:0 6px 24px rgba(16,24,40,.08)}
+.pay-qr-label{font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.05em}
+.pay-upi-row{display:flex;align-items:center;justify-content:space-between;background:#f7f8fc;border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:12px}
+.pay-upi-id{font-size:15px;font-weight:850;letter-spacing:-.3px;color:var(--ink)}
+.pay-copy-btn{border:1px solid var(--brand);background:rgba(91,92,240,.06);color:var(--brand);border-radius:8px;padding:6px 14px;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap}
+.pay-copy-btn:hover{background:var(--brand);color:#fff}
+.pay-amount-pill{display:inline-block;background:#eeefff;color:var(--brand);border-radius:99px;padding:6px 14px;font-size:13px;font-weight:800;margin-bottom:16px}
+.pay-tip{background:linear-gradient(135deg,rgba(255,183,0,.12),rgba(255,140,0,.06));border:1px solid rgba(255,183,0,.3);border-radius:12px;padding:12px 14px;font-size:13px;line-height:1.5;color:#92400e;margin-bottom:14px}
+.pay-app-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.pay-app-btn{border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 6px;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;font-weight:800;color:var(--ink);cursor:pointer;transition:.18s}
+.pay-app-btn:hover{border-color:var(--brand);background:#eeefff;color:var(--brand);transform:translateY(-2px);box-shadow:0 4px 14px rgba(91,92,240,.18)}
+.pay-app-btn span{font-size:22px}
+.pay-utr-card{position:sticky;top:90px}
+.pay-utr-steps{display:flex;flex-direction:column;gap:14px;margin-bottom:8px}
+.pay-utr-step{display:flex;gap:12px;align-items:flex-start}
+.pay-utr-step span{min-width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#fff;display:grid;place-items:center;font-size:11px;font-weight:900;margin-top:2px}
+.pay-utr-step p{font-size:13px;line-height:1.55;color:#344054;margin:0}
+.pay-label{display:block;font-size:12px;font-weight:800;color:#344054;margin-bottom:8px}
+.pay-input{width:100%;padding:14px;border:1.5px solid var(--line);border-radius:12px;outline:none;font:inherit;font-size:15px;font-weight:700;letter-spacing:.5px;transition:.2s;box-sizing:border-box}
+.pay-input:focus{border-color:var(--brand);box-shadow:0 0 0 4px rgba(91,92,240,.1)}
+.pay-submit-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#fff;border:none;border-radius:13px;font-size:15px;font-weight:800;cursor:pointer;box-shadow:0 8px 24px rgba(91,92,240,.3);transition:.2s;letter-spacing:.02em}
+.pay-submit-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 12px 30px rgba(91,92,240,.4)}
+.pay-submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.pay-guarantee{display:flex;gap:12px;align-items:flex-start;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:14px;margin-top:18px}
+.pay-guarantee span{font-size:20px}
+.pay-guarantee p{font-size:12px;color:#15803d;margin:0;line-height:1.5}
+.pay-success-card{width:min(500px,92%);margin:80px auto 0;background:#fff;border-radius:24px;padding:40px 32px;text-align:center;box-shadow:0 20px 60px rgba(16,24,40,.1);border:1px solid var(--line)}
+.pay-success-icon{font-size:56px;margin-bottom:16px}
+.pay-success-card h2{font-size:26px;margin:0 0 12px;letter-spacing:-.5px}
+.pay-success-card p{color:var(--muted);margin:0;line-height:1.6}
+
+/* Question Papers Upload UI */
+.papers-upload-form{padding:22px 24px;border-bottom:1px solid var(--line);background:#f9fafc}
+.papers-upload-form label{display:block;font-size:11px;font-weight:800;color:#344054;margin-bottom:6px}
+.papers-upload-form input[type=text]{width:100%;padding:11px 13px;border:1px solid #dfe4ec;border-radius:10px;font:inherit;font-size:13px;outline:none;box-sizing:border-box;margin-bottom:14px}
+.papers-upload-form input[type=text]:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(91,92,240,.09)}
+.papers-upload-drop{border:2px dashed #c8d0e0;border-radius:14px;padding:28px 20px;text-align:center;background:#fff;cursor:pointer;transition:.2s;margin-bottom:14px}
+.papers-upload-drop:hover{border-color:var(--brand);background:#f4f4ff}
+.papers-upload-drop input{display:none}
+.papers-upload-drop p{margin:8px 0 0;font-size:12px;color:var(--muted)}
+.papers-upload-drop strong{display:block;font-size:14px;color:var(--brand);font-weight:800}
+.papers-file-info{display:flex;align-items:center;gap:10px;background:#eeefff;border-radius:10px;padding:10px 14px;font-size:12px;font-weight:700;color:var(--brand);margin-bottom:14px}
+
+/* Extra responsive fixes */
+@media(max-width:900px){
+  .pay-grid{grid-template-columns:1fr}
+  .pay-utr-card{position:static}
+  .pay-steps{flex-wrap:wrap;gap:8px}
+  .pay-step-line{display:none}
+}
+@media(max-width:600px){
+  .pay-page{padding:30px 0 60px}
+  .pay-app-grid{grid-template-columns:repeat(2,1fr)}
+  .pay-card{padding:20px 16px}
+  .pay-submit-btn{font-size:14px;padding:14px}
+  .nav nav a{font-size:12px}
+  .dashboard-status{grid-template-columns:1fr 1fr}
+  .progress-grid{grid-template-columns:1fr}
+  .pricing-grid{grid-template-columns:1fr}
+  .board-grid{grid-template-columns:1fr}
+  .content-row{flex-direction:column;align-items:flex-start;gap:10px}
+}
+@media(max-width:400px){
+  .pay-qr-img{width:160px;height:160px}
+  .pay-app-grid{grid-template-columns:repeat(2,1fr)}
+  .pay-success-card{padding:28px 18px}
+}
