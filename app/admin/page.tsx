@@ -27,6 +27,9 @@ type Payment = {
   profiles: { full_name: string | null; id: string } | null;
 };
 
+type Paper = { name: string; size: number; created_at: string; url: string };
+type Student = { id: string; full_name: string; email: string; created_at: string; subscription: { plan: string; status: string; ends_at: string } | null };
+
 export default function AdminPage() {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [loaded, setLoaded] = useState(false);
@@ -39,6 +42,13 @@ export default function AdminPage() {
   const [payments, setPayments] = useState<Payment[]>([]);
   const [paymentsLoaded, setPaymentsLoaded] = useState(false);
   const [paymentMessage, setPaymentMessage] = useState("");
+  const [papers, setPapers] = useState<Paper[]>([]);
+  const [papersLoaded, setPapersLoaded] = useState(false);
+  const [paperMessage, setPaperMessage] = useState("");
+  const [uploading, setUploading] = useState(false);
+  const [paperLabel, setPaperLabel] = useState("");
+  const [students, setStudents] = useState<Student[]>([]);
+  const [studentsLoaded, setStudentsLoaded] = useState(false);
 
   const chapterOptions = useMemo(() => {
     const base = getChapters(subject).map((item) => ({ id: item.id, name: item.name }));
@@ -86,6 +96,48 @@ export default function AdminPage() {
     setPaymentsLoaded(true);
   }
 
+  async function loadPapers() {
+    try {
+      const r = await fetch("/api/papers", { cache: "no-store" });
+      const data = await r.json();
+      if (r.ok) setPapers(data.papers ?? []);
+    } catch {}
+    setPapersLoaded(true);
+  }
+
+  async function deletePaper(name: string) {
+    if (!confirm(`Delete "${name}"?`)) return;
+    const r = await fetch("/api/papers", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name }) });
+    if (r.ok) { setPaperMessage("Deleted."); await loadPapers(); setTimeout(() => setPaperMessage(""), 2000); }
+  }
+
+  async function uploadPaper(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const fileInput = form.querySelector<HTMLInputElement>("input[type=file]");
+    const file = fileInput?.files?.[0];
+    if (!file) return;
+    setUploading(true); setPaperMessage("");
+    const fd = new FormData();
+    fd.append("file", file);
+    fd.append("label", paperLabel || file.name);
+    const r = await fetch("/api/papers", { method: "POST", body: fd });
+    const data = await r.json();
+    setUploading(false);
+    if (!r.ok) { setPaperMessage(data.error || "Upload failed."); return; }
+    setPaperMessage("PDF uploaded successfully!"); setPaperLabel(""); form.reset();
+    await loadPapers(); setTimeout(() => setPaperMessage(""), 3000);
+  }
+
+  async function loadStudents() {
+    try {
+      const r = await fetch("/api/students", { cache: "no-store" });
+      const data = await r.json();
+      if (r.ok) setStudents(data.students ?? []);
+    } catch {}
+    setStudentsLoaded(true);
+  }
+
   async function reviewPayment(id: string, status: "approved" | "rejected") {
     try {
       const response = await fetch("/api/payments", {
@@ -110,6 +162,8 @@ export default function AdminPage() {
         loadQuestions();
         loadCustomChapters();
         loadPayments();
+        loadPapers();
+        loadStudents();
       })
       .catch(() => { window.location.href = "/admin/login"; });
     const load = () => loadQuestions();
@@ -400,11 +454,89 @@ export default function AdminPage() {
               </div>
             )}
           </section>
+        ) : active === "Question Papers" ? (
+          <section className="admin-panel">
+            <div className="panel-heading list-heading">
+              <div><h2>Question Papers</h2><p>Upload PDF question papers for students</p></div>
+              <button className="admin-primary" onClick={loadPapers}>Refresh</button>
+            </div>
+            {paperMessage && <div className="publish-success">✓ {paperMessage}</div>}
+            <form onSubmit={uploadPaper} style={{ display: "flex", flexDirection: "column", gap: "0.75rem", padding: "1.25rem 0", borderBottom: "1px solid var(--border)" }}>
+              <label style={{ fontWeight: 600, fontSize: "0.85rem" }}>PDF Label / Title
+                <input value={paperLabel} onChange={e => setPaperLabel(e.target.value)} placeholder="e.g. GSEB Physics 2024 Paper" style={{ marginTop: "0.4rem", display: "block", width: "100%" }} />
+              </label>
+              <label style={{ fontWeight: 600, fontSize: "0.85rem" }}>Choose PDF File
+                <input type="file" accept="application/pdf" required style={{ marginTop: "0.4rem", display: "block" }} />
+              </label>
+              <button className="admin-primary" type="submit" disabled={uploading} style={{ alignSelf: "flex-start" }}>
+                {uploading ? "Uploading…" : "⬆ Upload PDF"}
+              </button>
+            </form>
+            {!papersLoaded ? <div className="admin-loading">Loading papers…</div> : papers.length === 0 ? (
+              <div className="admin-empty">No PDFs uploaded yet.</div>
+            ) : (
+              <div className="published-list">
+                {papers.map((p) => (
+                  <article className="published-item" key={p.name}>
+                    <div className="published-top">
+                      <span className="q-number">PDF</span>
+                      <span className="content-path">{p.name.replace(/^\d+_/, "")}</span>
+                      <span className="admin-tag">{(p.size / 1024).toFixed(0)} KB</span>
+                    </div>
+                    <p style={{ margin: "0.25rem 0", fontSize: "0.85rem", opacity: 0.7 }}>
+                      Uploaded: {new Date(p.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
+                    </p>
+                    <div style={{ display: "flex", gap: "0.5rem", marginTop: "0.5rem" }}>
+                      <a href={p.url} target="_blank" rel="noreferrer" className="admin-primary" style={{ fontSize: "0.8rem", padding: "0.35rem 0.9rem", textDecoration: "none", borderRadius: "6px" }}>View PDF</a>
+                      <button className="remove-btn" onClick={() => deletePaper(p.name)}>Delete</button>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            )}
+          </section>
+        ) : active === "Students" ? (
+          <section className="admin-panel">
+            <div className="panel-heading list-heading">
+              <div><h2>Students</h2><p>All registered student accounts</p></div>
+              <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                <span style={{ fontSize: "0.85rem", opacity: 0.6 }}>{students.length} students</span>
+                <button className="admin-primary" onClick={loadStudents}>Refresh</button>
+              </div>
+            </div>
+            {!studentsLoaded ? <div className="admin-loading">Loading students…</div> : students.length === 0 ? (
+              <div className="admin-empty">No students registered yet.</div>
+            ) : (
+              <div className="published-list">
+                {students.map((s, i) => (
+                  <article className="published-item" key={s.id}>
+                    <div className="published-top">
+                      <span className="q-number">{String(i + 1).padStart(2, "0")}</span>
+                      <span className="content-path">{s.email}</span>
+                      <span
+                        className="admin-tag"
+                        style={{
+                          background: s.subscription?.status === "active" ? "rgba(34,197,94,0.15)" : "rgba(239,68,68,0.1)",
+                          color: s.subscription?.status === "active" ? "#22c55e" : "#f87171",
+                        }}
+                      >
+                        {s.subscription ? `${s.subscription.plan} — ${s.subscription.status.toUpperCase()}` : "NO SUBSCRIPTION"}
+                      </span>
+                    </div>
+                    <p style={{ margin: "0.25rem 0", fontSize: "0.85rem", opacity: 0.7 }}>
+                      {s.full_name !== "—" ? `Name: ${s.full_name} • ` : ""}Joined: {new Date(s.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
+                      {s.subscription?.ends_at ? ` • Expires: ${new Date(s.subscription.ends_at).toLocaleDateString("en-IN")}` : ""}
+                    </p>
+                  </article>
+                ))}
+              </div>
+            )}
+          </section>
         ) : (
           <section className="coming-panel">
             <span className="coming-icon">◌</span>
             <h2>{active} module</h2>
-            <p>This module is reserved for the next development phase. The navigation and admin shell are ready.</p>
+            <p>Coming soon.</p>
           </section>
         )}
       </main>
